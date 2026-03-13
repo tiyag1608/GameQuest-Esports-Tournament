@@ -1,0 +1,239 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="description" content="GameQuest – Tournament Brackets. View Quarter Finals, Semi Finals and Finals match progression." />
+  <title>GameQuest – Brackets</title>
+
+  <!-- Google Fonts -->
+  <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;600;700;900&family=Rajdhani:wght@400;500;600;700&display=swap" rel="stylesheet" />
+
+  <!-- Linked CSS -->
+  <link rel="stylesheet" href="css/style.css" />
+</head>
+<body>
+
+  <!-- ========== NAVIGATION BAR ========== -->
+  <nav class="navbar" id="navbar">
+    <div class="nav-brand">
+      <span class="logo-icon">⚡</span>
+      <span class="logo-text">Game<span class="accent">Quest</span></span>
+    </div>
+
+    <!-- Hamburger for mobile -->
+    <button class="hamburger" id="hamburger" aria-label="Toggle navigation">
+      <span></span><span></span><span></span>
+    </button>
+
+    <ul class="nav-links" id="navLinks">
+      <li><a href="tournaments.html" class="nav-link" id="nav-home">🏆 Tournaments</a></li>
+      <!-- Active class on Brackets because we are on this page -->
+      <li><a href="brackets.html" class="nav-link active" id="nav-brackets">🎯 Brackets</a></li>
+    </ul>
+  </nav>
+
+  <!-- ========== PAGE HEADER ========== -->
+  <section class="page-hero" id="pageHero">
+    <div class="hero-orb orb-1"></div>
+    <div class="hero-orb orb-2"></div>
+    <div class="page-hero-content">
+      <p class="hero-tag">🏆 Valorant Open – Season 2026</p>
+      <h1 class="hero-title">Tournament <span class="gradient-text">Bracket</span></h1>
+      <p class="hero-subtitle">Follow the match progression from Quarter Finals all the way to the Grand Final.</p>
+    </div>
+  </section>
+
+  <!-- ========== BRACKET SELECTOR ========== -->
+  <section class="section" id="bracketSection">
+    <div class="section-header">
+      <h2 class="section-title">Match <span class="accent">Progression</span></h2>
+      <p class="section-subtitle">Click on a team to highlight their path through the bracket.</p>
+    </div>
+
+    <!-- Game selector tabs -->
+    <div class="filter-tabs" id="bracketTabs">
+      <button class="filter-btn active" data-bracket="valorant" id="btn-valorant">Valorant Open</button>
+      <button class="filter-btn" data-bracket="bgmi" id="btn-bgmi">BGMI Masters</button>
+      <button class="filter-btn" data-bracket="freefire" id="btn-freefire">Free Fire Cup</button>
+    </div>
+
+    <!-- ========== BRACKET VISUAL ========== -->
+    <!-- The bracket is a 3-column layout: QF | SF | Final -->
+    <div class="bracket-wrapper" id="bracketWrapper">
+
+      <!-- ── QUARTER FINALS ── -->
+      <div class="bracket-round" id="roundQF">
+        <h3 class="round-label">Quarter Finals</h3>
+
+        <!-- QF Match 1 -->
+        <div class="bracket-match" id="qf1">
+          <div class="bracket-team winner" id="qf1-t1">
+            <span class="team-seed">1</span>
+            <span class="team-name">Team Nova</span>
+            <span class="team-score">13</span>
+          </div>
+          <div class="bracket-team" id="qf1-t2">
+            <span class="team-seed">8</span>
+            <span class="team-name">Shadow Rush</span>
+            <span class="team-score">7</span>
+          </div>
+        </div>
+
+        <!-- QF Match 2 -->
+        <div class="bracket-match" id="qf2">
+          <div class="bracket-team winner" id="qf2-t1">
+            <span class="team-seed">4</span>
+            <span class="team-name">Blaze eSports</span>
+            <span class="team-score">13</span>
+          </div>
+          <div class="bracket-team" id="qf2-t2">
+            <span class="team-seed">5</span>
+            <span class="team-name">Storm Riders</span>
+            <span class="team-score">10</span>
+          </div>
+        </div>
+
+        <!-- QF Match 3 -->
+        <div class="bracket-match" id="qf3">
+          <div class="bracket-team winner" id="qf3-t1">
+            <span class="team-seed">2</span>
+            <span class="team-name">Cyber Wolves</span>
+            <span class="team-score">13</span>
+          </div>
+          <div class="bracket-team" id="qf3-t2">
+            <span class="team-seed">7</span>
+            <span class="team-name">Pixel Force</span>
+            <span class="team-score">5</span>
+          </div>
+        </div>
+
+        <!-- QF Match 4 -->
+        <div class="bracket-match" id="qf4">
+          <div class="bracket-team winner" id="qf4-t1">
+            <span class="team-seed">3</span>
+            <span class="team-name">Iron Fist</span>
+            <span class="team-score">13</span>
+          </div>
+          <div class="bracket-team" id="qf4-t2">
+            <span class="team-seed">6</span>
+            <span class="team-name">Ghost Squad</span>
+            <span class="team-score">9</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Connector lines between QF and SF -->
+      <div class="bracket-connectors" id="connQF" aria-hidden="true">
+        <div class="connector-group">
+          <div class="conn-line top"></div>
+          <div class="conn-mid"></div>
+          <div class="conn-line bottom"></div>
+        </div>
+        <div class="connector-group">
+          <div class="conn-line top"></div>
+          <div class="conn-mid"></div>
+          <div class="conn-line bottom"></div>
+        </div>
+      </div>
+
+      <!-- ── SEMI FINALS ── -->
+      <div class="bracket-round" id="roundSF">
+        <h3 class="round-label">Semi Finals</h3>
+
+        <!-- SF Match 1 -->
+        <div class="bracket-match sf-match" id="sf1">
+          <div class="bracket-team winner" id="sf1-t1">
+            <span class="team-seed">1</span>
+            <span class="team-name">Team Nova</span>
+            <span class="team-score">13</span>
+          </div>
+          <div class="bracket-team" id="sf1-t2">
+            <span class="team-seed">4</span>
+            <span class="team-name">Blaze eSports</span>
+            <span class="team-score">11</span>
+          </div>
+        </div>
+
+        <!-- SF Match 2 -->
+        <div class="bracket-match sf-match" id="sf2">
+          <div class="bracket-team winner" id="sf2-t1">
+            <span class="team-seed">3</span>
+            <span class="team-name">Iron Fist</span>
+            <span class="team-score">13</span>
+          </div>
+          <div class="bracket-team" id="sf2-t2">
+            <span class="team-seed">2</span>
+            <span class="team-name">Cyber Wolves</span>
+            <span class="team-score">12</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Connector lines between SF and Final -->
+      <div class="bracket-connectors" id="connSF" aria-hidden="true">
+        <div class="connector-group single">
+          <div class="conn-line top"></div>
+          <div class="conn-mid"></div>
+          <div class="conn-line bottom"></div>
+        </div>
+      </div>
+
+      <!-- ── GRAND FINAL ── -->
+      <div class="bracket-round" id="roundFinal">
+        <h3 class="round-label final-label">🏆 Grand Final</h3>
+
+        <!-- Final Match -->
+        <div class="bracket-match final-match" id="finalMatch">
+          <!-- Champion -->
+          <div class="bracket-team champion" id="final-t1">
+            <span class="team-seed">👑</span>
+            <span class="team-name">Team Nova</span>
+            <span class="team-score">13</span>
+          </div>
+          <!-- Runner up -->
+          <div class="bracket-team" id="final-t2">
+            <span class="team-seed">2</span>
+            <span class="team-name">Iron Fist</span>
+            <span class="team-score">10</span>
+          </div>
+        </div>
+
+        <!-- Champion banner -->
+        <div class="champion-banner" id="championBanner">
+          <div class="champion-trophy">🏆</div>
+          <p class="champion-title">CHAMPIONS</p>
+          <p class="champion-name" id="championName">Team Nova</p>
+        </div>
+      </div>
+
+    </div><!-- end bracket-wrapper -->
+
+    <!-- Legend -->
+    <div class="bracket-legend" id="bracketLegend">
+      <span class="legend-item"><span class="legend-dot winner-dot"></span> Match Winner</span>
+      <span class="legend-item"><span class="legend-dot champion-dot"></span> Champion</span>
+      <span class="legend-item"><span class="legend-dot live-dot"></span> Live Match</span>
+    </div>
+
+  </section><!-- end bracket section -->
+
+  <!-- ========== FOOTER ========== -->
+  <footer class="footer" id="footer">
+    <div class="footer-brand">
+      <span class="logo-icon">⚡</span>
+      <span class="logo-text">Game<span class="accent">Quest</span></span>
+    </div>
+    <p class="footer-copy">© 2026 GameQuest Esports Hub. All rights reserved.</p>
+    <div class="footer-links">
+      <a href="#">Privacy Policy</a>
+      <a href="#">Terms of Service</a>
+      <a href="#">Contact</a>
+    </div>
+  </footer>
+
+  <!-- Linked JavaScript -->
+  <script src="js/script.js"></script>
+
+</body>
+</html>

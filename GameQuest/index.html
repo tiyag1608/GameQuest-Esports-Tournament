@@ -1,0 +1,393 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>GameQuest – Esports Tournament Hub</title>
+  <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;600;700;900&family=Rajdhani:wght@400;500;600;700&display=swap" rel="stylesheet"/>
+  <style>
+    :root{
+      --bg:#07080f;--surface:#0d0f1c;--s2:#131629;--border:#1e2240;
+      --blue:#00d4ff;--purple:#8b5cf6;--cyan:#06ffa5;--pink:#ff2d78;
+      --txt:#e8eaf6;--txt2:#8892b0;--txt3:#4a5568;
+      --grad:linear-gradient(135deg,#00d4ff,#8b5cf6);
+      --fd:'Orbitron',monospace;--fb:'Rajdhani',sans-serif;
+      --r:8px;--r2:14px;--tr:0.3s ease;
+    }
+    *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+    html{scroll-behavior:smooth}
+    body{font-family:var(--fb);background:var(--bg);color:var(--txt);overflow-x:hidden}
+    a{text-decoration:none;color:inherit}
+    button{cursor:pointer;border:none;background:none;font-family:var(--fb)}
+
+    /* ── NAVBAR ── */
+    nav{
+      position:fixed;top:0;left:0;width:100%;height:68px;
+      display:flex;align-items:center;justify-content:space-between;
+      padding:0 6%;background:rgba(7,8,15,0.85);
+      backdrop-filter:blur(16px);border-bottom:1px solid var(--border);z-index:100;
+      transition:box-shadow var(--tr);
+    }
+    nav.sc{box-shadow:0 4px 30px rgba(0,212,255,0.1)}
+    .brand{display:flex;align-items:center;gap:8px;font-family:var(--fd);font-size:1.35rem;font-weight:700;letter-spacing:2px}
+    .brand-icon{font-size:1.5rem;filter:drop-shadow(0 0 8px var(--blue))}
+    .acc{color:var(--blue)}
+    .nav-r{display:flex;align-items:center;gap:10px}
+    .n-link{padding:8px 16px;border-radius:var(--r);font-size:0.9rem;font-weight:600;color:var(--txt2);transition:color var(--tr)}
+    .n-link:hover{color:var(--blue)}
+    .n-cta{padding:9px 22px;border-radius:var(--r);background:var(--grad);color:#fff;font-family:var(--fd);font-size:0.72rem;font-weight:700;letter-spacing:2px;text-transform:uppercase;transition:transform var(--tr),box-shadow var(--tr)}
+    .n-cta:hover{transform:translateY(-2px);box-shadow:0 0 20px rgba(0,212,255,0.4)}
+
+    /* ── HERO ── */
+    .hero{
+      min-height:100vh;display:flex;flex-direction:column;
+      align-items:center;justify-content:center;text-align:center;
+      padding:100px 6% 80px;position:relative;overflow:hidden;
+    }
+    .hero-tag{
+      display:inline-flex;align-items:center;gap:8px;
+      padding:7px 20px;border-radius:50px;margin-bottom:28px;
+      border:1px solid var(--cyan);color:var(--cyan);
+      font-size:0.85rem;font-weight:600;letter-spacing:1px;
+      animation:pulse-c 2s infinite;
+    }
+    @keyframes pulse-c{0%,100%{box-shadow:0 0 0 0 rgba(6,255,165,0.3)}50%{box-shadow:0 0 0 8px rgba(6,255,165,0)}}
+    .live-dot{width:8px;height:8px;border-radius:50%;background:var(--pink);animation:blink 1s infinite;flex-shrink:0}
+    @keyframes blink{0%,100%{opacity:1}50%{opacity:0}}
+    .hero h1{
+      font-family:var(--fd);font-size:clamp(2.5rem,7vw,5.5rem);
+      font-weight:900;line-height:1.05;letter-spacing:2px;margin-bottom:24px;
+    }
+    .grad-txt{background:var(--grad);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
+    .hero p{font-size:clamp(1rem,2vw,1.25rem);color:var(--txt2);max-width:620px;line-height:1.75;margin-bottom:42px}
+    .hero-ctas{display:flex;align-items:center;gap:14px;flex-wrap:wrap;justify-content:center}
+    .btn-prim{
+      padding:15px 38px;border-radius:var(--r);background:var(--grad);color:#fff;
+      font-family:var(--fd);font-size:0.82rem;font-weight:700;letter-spacing:2px;text-transform:uppercase;
+      box-shadow:0 0 24px rgba(0,212,255,0.35);transition:transform var(--tr),box-shadow var(--tr),filter var(--tr);
+    }
+    .btn-prim:hover{transform:translateY(-4px);box-shadow:0 0 36px rgba(0,212,255,0.55);filter:brightness(1.1)}
+    .btn-ghost{
+      padding:14px 34px;border-radius:var(--r);border:1px solid var(--blue);
+      color:var(--blue);font-family:var(--fd);font-size:0.82rem;font-weight:700;
+      letter-spacing:2px;text-transform:uppercase;transition:background var(--tr),box-shadow var(--tr),transform var(--tr);
+    }
+    .btn-ghost:hover{background:rgba(0,212,255,0.1);box-shadow:0 0 20px rgba(0,212,255,0.25);transform:translateY(-4px)}
+
+    /* Hero stats strip */
+    .hero-stats{
+      display:flex;gap:40px;flex-wrap:wrap;justify-content:center;
+      margin-top:60px;padding-top:40px;border-top:1px solid var(--border);
+      width:100%;max-width:700px;
+    }
+    .hs-item{text-align:center}
+    .hs-num{font-family:var(--fd);font-size:2rem;font-weight:800;color:var(--blue);text-shadow:0 0 16px rgba(0,212,255,0.4)}
+    .hs-lbl{font-size:0.78rem;color:var(--txt2);letter-spacing:1px;text-transform:uppercase;margin-top:4px}
+
+    /* Background orbs */
+    .orb{position:absolute;border-radius:50%;filter:blur(80px);pointer-events:none;animation:floatOrb 8s ease-in-out infinite}
+    .o1{width:500px;height:500px;background:rgba(0,212,255,0.1);top:-10%;left:-15%;animation-delay:0s}
+    .o2{width:600px;height:600px;background:rgba(139,92,246,0.1);bottom:-10%;right:-20%;animation-delay:-3s}
+    .o3{width:300px;height:300px;background:rgba(6,255,165,0.07);top:50%;left:50%;transform:translate(-50%,-50%);animation-delay:-5s}
+    @keyframes floatOrb{0%,100%{transform:translateY(0) scale(1)}50%{transform:translateY(-28px) scale(1.05)}}
+    /* Scrolling game ticker */
+    .ticker{position:absolute;bottom:0;left:0;right:0;padding:12px 0;background:rgba(13,15,28,0.8);border-top:1px solid var(--border);overflow:hidden}
+    .ticker-inner{display:flex;gap:48px;animation:scroll-left 18s linear infinite;white-space:nowrap}
+    @keyframes scroll-left{0%{transform:translateX(0)}100%{transform:translateX(-50%)}}
+    .t-chip{display:inline-flex;align-items:center;gap:8px;font-size:0.82rem;font-weight:600;color:var(--txt2);padding:4px 14px;border-radius:50px;border:1px solid var(--border)}
+    .t-chip span{color:var(--cyan)}
+
+    /* ── FEATURES ── */
+    .section{padding:90px 6%}
+    .sec-head{text-align:center;margin-bottom:60px}
+    .sec-tag{display:inline-block;padding:5px 16px;border-radius:50px;border:1px solid var(--purple);color:var(--purple);font-size:0.78rem;font-weight:700;letter-spacing:2px;text-transform:uppercase;margin-bottom:16px}
+    .sec-title{font-family:var(--fd);font-size:clamp(1.6rem,3.5vw,2.5rem);font-weight:800;letter-spacing:2px;margin-bottom:12px}
+    .sec-sub{color:var(--txt2);font-size:1.05rem;max-width:540px;margin:0 auto}
+    .features-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:24px}
+    .feat-card{
+      background:linear-gradient(145deg,#0d0f1c,#131629);
+      border:1px solid var(--border);border-radius:var(--r2);
+      padding:28px 24px;position:relative;overflow:hidden;
+      transition:transform var(--tr),border-color var(--tr),box-shadow var(--tr);
+    }
+    .feat-card::before{content:'';position:absolute;top:0;left:0;right:0;height:2px}
+    .feat-card:nth-child(1)::before{background:linear-gradient(90deg,var(--blue),var(--purple))}
+    .feat-card:nth-child(2)::before{background:linear-gradient(90deg,var(--cyan),var(--blue))}
+    .feat-card:nth-child(3)::before{background:linear-gradient(90deg,var(--purple),var(--pink))}
+    .feat-card:nth-child(4)::before{background:linear-gradient(90deg,var(--pink),var(--orange,#ff9a3c))}
+    .feat-card:nth-child(5)::before{background:linear-gradient(90deg,var(--blue),var(--cyan))}
+    .feat-card:nth-child(6)::before{background:linear-gradient(90deg,var(--purple),var(--blue))}
+    .feat-card:hover{transform:translateY(-8px);border-color:var(--blue);box-shadow:0 12px 40px rgba(0,0,0,0.4),0 0 20px rgba(0,212,255,0.12)}
+    .feat-icon{font-size:2.2rem;margin-bottom:16px}
+    .feat-title{font-family:var(--fd);font-size:0.9rem;font-weight:700;letter-spacing:1px;margin-bottom:10px;color:var(--blue)}
+    .feat-desc{font-size:0.9rem;color:var(--txt2);line-height:1.65}
+
+    /* ── GAMES ── */
+    .games-section{padding:80px 6%;background:var(--surface);border-top:1px solid var(--border);border-bottom:1px solid var(--border)}
+    .games-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:20px;max-width:900px;margin:0 auto}
+    .game-card{
+      border-radius:var(--r2);overflow:hidden;position:relative;
+      aspect-ratio:4/3;display:flex;flex-direction:column;
+      align-items:center;justify-content:flex-end;padding:24px;
+      cursor:pointer;transition:transform var(--tr),box-shadow var(--tr);
+      border:1px solid var(--border);
+    }
+    .game-card:hover{transform:translateY(-6px) scale(1.02);box-shadow:0 20px 40px rgba(0,0,0,0.5)}
+    .game-card.bgmi   {background:linear-gradient(180deg,rgba(255,107,53,0.15) 0%,rgba(7,8,15,0.95) 100%),#0d0f1c}
+    .game-card.val    {background:linear-gradient(180deg,rgba(255,70,85,0.15) 0%, rgba(7,8,15,0.95) 100%),#0d0f1c}
+    .game-card.ff     {background:linear-gradient(180deg,rgba(255,154,60,0.15) 0%,rgba(7,8,15,0.95) 100%),#0d0f1c}
+    .game-big-icon{font-size:3.5rem;position:absolute;top:20px;left:50%;transform:translateX(-50%);opacity:0.7}
+    .game-name{font-family:var(--fd);font-size:0.95rem;font-weight:700;letter-spacing:2px;position:relative;z-index:1}
+    .game-count{font-size:0.78rem;color:var(--txt2);margin-top:4px;position:relative;z-index:1}
+    .game-badge{
+      position:absolute;top:12px;right:12px;
+      padding:3px 10px;border-radius:50px;font-size:0.65rem;font-weight:700;
+      letter-spacing:1px;text-transform:uppercase;
+    }
+    .game-badge.live{background:rgba(255,45,120,0.2);color:var(--pink);border:1px solid rgba(255,45,120,0.4)}
+    .game-badge.hot {background:rgba(255,154,60,0.2);color:#ff9a3c;border:1px solid rgba(255,154,60,0.4)}
+
+    /* ── CTA BANNER ── */
+    .cta-section{
+      padding:90px 6%;text-align:center;
+      background:radial-gradient(ellipse at center,rgba(139,92,246,0.12) 0%,transparent 70%);
+      position:relative;overflow:hidden;
+    }
+    .cta-section .orb{filter:blur(60px)}
+    .cta-box{position:relative;z-index:2}
+    .cta-section h2{font-family:var(--fd);font-size:clamp(1.8rem,4vw,3rem);font-weight:800;letter-spacing:2px;margin-bottom:16px}
+    .cta-section p{color:var(--txt2);font-size:1.05rem;max-width:500px;margin:0 auto 36px}
+
+    /* ── FOOTER ── */
+    footer{
+      background:var(--surface);border-top:1px solid var(--border);
+      padding:36px 6%;display:flex;align-items:center;
+      justify-content:space-between;flex-wrap:wrap;gap:16px;
+    }
+    .foot-brand{display:flex;align-items:center;gap:8px;font-family:var(--fd);font-size:1.1rem;font-weight:700;letter-spacing:2px}
+    .foot-copy{color:var(--txt2);font-size:0.82rem}
+    .foot-links{display:flex;gap:18px}
+    .foot-links a{color:var(--txt2);font-size:0.82rem;transition:color var(--tr)}
+    .foot-links a:hover{color:var(--blue)}
+
+    /* ── RESPONSIVE ── */
+    @media(max-width:900px){
+      .features-grid{grid-template-columns:repeat(2,1fr)}
+      .games-grid{grid-template-columns:repeat(2,1fr)}
+      footer{flex-direction:column;align-items:center;text-align:center}
+    }
+    @media(max-width:600px){
+      .features-grid{grid-template-columns:1fr}
+      .games-grid{grid-template-columns:1fr}
+      .hero-stats{gap:24px}
+      .nav-r .n-link{display:none}
+    }
+    ::-webkit-scrollbar{width:5px}::-webkit-scrollbar-track{background:var(--bg)}
+    ::-webkit-scrollbar-thumb{background:var(--border);border-radius:3px}
+    ::-webkit-scrollbar-thumb:hover{background:var(--blue)}
+  </style>
+</head>
+<body>
+
+  <!-- ══ NAVBAR ══ -->
+  <nav id="nav">
+    <div class="brand"><span class="brand-icon">⚡</span>Game<span class="acc">Quest</span></div>
+    <div class="nav-r">
+      <a class="n-link" href="tournaments.html">Tournaments</a>
+      <a class="n-link" href="brackets.html">Brackets</a>
+      <a class="n-cta" href="dashboard.html">Dashboard →</a>
+    </div>
+  </nav>
+
+  <!-- ══ HERO ══ -->
+  <section class="hero" id="hero">
+    <div class="orb o1"></div><div class="orb o2"></div><div class="orb o3"></div>
+
+    <div class="hero-tag">
+      <span class="live-dot"></span>
+      Season 2026 is LIVE — 2 Matches in Progress
+    </div>
+
+    <h1>
+      The Ultimate<br/>
+      <span class="grad-txt">Esports Arena</span>
+    </h1>
+
+    <p>Compete in elite BGMI, Valorant & Free Fire tournaments. Register your team, climb the bracket, and claim your glory.</p>
+
+    <div class="hero-ctas">
+      <a class="btn-prim" href="dashboard.html">Enter Dashboard ⚡</a>
+      <a class="btn-ghost" href="tournaments.html">Browse Tournaments</a>
+    </div>
+
+    <div class="hero-stats">
+      <div class="hs-item"><div class="hs-num">24</div><div class="hs-lbl">Active Tournaments</div></div>
+      <div class="hs-item"><div class="hs-num">3,200+</div><div class="hs-lbl">Teams Registered</div></div>
+      <div class="hs-item"><div class="hs-num">₹12L+</div><div class="hs-lbl">Total Prize Pool</div></div>
+      <div class="hs-item"><div class="hs-num">580</div><div class="hs-lbl">Matches Played</div></div>
+    </div>
+
+    <!-- Scrolling ticker -->
+    <div class="ticker">
+      <div class="ticker-inner" id="ticker">
+        <span class="t-chip">🔴 LIVE<span>Valorant Open QF</span></span>
+        <span class="t-chip">🏆 OPEN<span>BGMI Masters – ₹1L Prize</span></span>
+        <span class="t-chip">🔥 Hot<span>Free Fire Squad Rush – 28/32 Teams</span></span>
+        <span class="t-chip">⚔️ UPCOMING<span>Valorant Champions – April 20</span></span>
+        <span class="t-chip">🔴 LIVE<span>BGMI Round 3 – Wolves vs Iron Fist</span></span>
+        <span class="t-chip">📝 NEW<span>Free Fire Tri-Cup – Register Now</span></span>
+        <!-- Duplicate for seamless loop -->
+        <span class="t-chip">🔴 LIVE<span>Valorant Open QF</span></span>
+        <span class="t-chip">🏆 OPEN<span>BGMI Masters – ₹1L Prize</span></span>
+        <span class="t-chip">🔥 Hot<span>Free Fire Squad Rush – 28/32 Teams</span></span>
+        <span class="t-chip">⚔️ UPCOMING<span>Valorant Champions – April 20</span></span>
+        <span class="t-chip">🔴 LIVE<span>BGMI Round 3 – Wolves vs Iron Fist</span></span>
+        <span class="t-chip">📝 NEW<span>Free Fire Tri-Cup – Register Now</span></span>
+      </div>
+    </div>
+  </section>
+
+  <!-- ══ FEATURES ══ -->
+  <section class="section" id="features">
+    <div class="sec-head">
+      <p class="sec-tag">Why GameQuest?</p>
+      <h2 class="sec-title">Everything You Need to <span class="grad-txt">Compete</span></h2>
+      <p class="sec-sub">From registration to the grand final — we've got every step covered.</p>
+    </div>
+    <div class="features-grid">
+      <div class="feat-card">
+        <div class="feat-icon">🏆</div>
+        <h3 class="feat-title">Live Tournaments</h3>
+        <p class="feat-desc">Browse and register for BGMI, Valorant, and Free Fire tournaments across multiple formats — Solo, Duo, Squad and Team.</p>
+      </div>
+      <div class="feat-card">
+        <div class="feat-icon">🎯</div>
+        <h3 class="feat-title">Visual Brackets</h3>
+        <p class="feat-desc">Follow the match progression from Quarter Finals → Semi Finals → Grand Final with our interactive bracket viewer.</p>
+      </div>
+      <div class="feat-card">
+        <div class="feat-icon">🔴</div>
+        <h3 class="feat-title">Live Score Updates</h3>
+        <p class="feat-desc">Track real-time scores of all ongoing matches. Every point update is highlighted with neon flash animations.</p>
+      </div>
+      <div class="feat-card">
+        <div class="feat-icon">📊</div>
+        <h3 class="feat-title">Admin Dashboard</h3>
+        <p class="feat-desc">Manage all tournaments from one place — view stats, track registrations, monitor live matches, and analyse performance.</p>
+      </div>
+      <div class="feat-card">
+        <div class="feat-icon">💰</div>
+        <h3 class="feat-title">Massive Prize Pools</h3>
+        <p class="feat-desc">Compete for prize pools up to ₹5,00,000 per tournament. Season 2026 total prize exceeds ₹12 Lakhs.</p>
+      </div>
+      <div class="feat-card">
+        <div class="feat-icon">📱</div>
+        <h3 class="feat-title">Fully Responsive</h3>
+        <p class="feat-desc">Works perfectly on your laptop, tablet, or phone. Compete and follow matches from anywhere, anytime.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- ══ GAMES ══ -->
+  <div class="games-section" id="games">
+    <div class="sec-head">
+      <p class="sec-tag">Our Games</p>
+      <h2 class="sec-title">Pick Your <span class="grad-txt">Battleground</span></h2>
+      <p class="sec-sub">Three of India's most competitive titles — one platform.</p>
+    </div>
+    <div class="games-grid">
+      <div class="game-card bgmi">
+        <div class="game-big-icon">🔫</div>
+        <span class="game-badge hot">Hot</span>
+        <p class="game-name">BGMI</p>
+        <p class="game-count">2 Active Tournaments</p>
+      </div>
+      <div class="game-card val">
+        <div class="game-big-icon">⚔️</div>
+        <span class="game-badge live">🔴 Live</span>
+        <p class="game-name">VALORANT</p>
+        <p class="game-count">2 Active Tournaments</p>
+      </div>
+      <div class="game-card ff">
+        <div class="game-big-icon">🔥</div>
+        <span class="game-badge live">🔴 Live</span>
+        <p class="game-name">FREE FIRE</p>
+        <p class="game-count">2 Active Tournaments</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- ══ PRICING STRATEGY ══ -->
+  <section class="section" id="pricing" style="padding-bottom: 0;">
+    <div class="sec-head">
+      <p class="sec-tag">Pricing Strategy</p>
+      <h2 class="sec-title">Play Your <span class="grad-txt">Way</span></h2>
+      <p class="sec-sub">Choose to pay per tournament or get unlimited access with our Pro membership.</p>
+    </div>
+    <div class="features-grid" style="grid-template-columns: repeat(2, 1fr); max-width: 800px; margin: 0 auto; gap: 30px;">
+      
+      <!-- Basic Tier -->
+      <div class="feat-card" style="text-align: left; display: flex; flex-direction: column;">
+        <h3 class="feat-title" style="font-size: 1.5rem; color: var(--txt);">Basic Entry</h3>
+        <p style="font-size: 2rem; font-family: var(--fd); font-weight: 800; margin: 15px 0;">Team Fees</p>
+        <p class="feat-desc" style="margin-bottom: 25px;">Pay a fixed team entry fee for every tournament you register for. Ideal for casual players.</p>
+        <ul style="margin-bottom: 30px; font-size: 0.9rem; color: var(--txt2); line-height: 2;">
+          <li>✔️ Standard Team Registration</li>
+          <li>✔️ Access to Open Tournaments</li>
+          <li>✔️ Regular Match Support</li>
+        </ul>
+        <div style="margin-top: auto;">
+          <a class="btn-ghost" href="tournaments.html" style="display: block; text-align: center; width: 100%;">View Entry Fees</a>
+        </div>
+      </div>
+
+      <!-- Pro Tier -->
+      <div class="feat-card" style="text-align: left; border-color: var(--pink); box-shadow: 0 0 20px rgba(255,45,120,0.15); display: flex; flex-direction: column; transform: scale(1.05);">
+        <div style="position: absolute; top: 0; left: 50%; transform: translateX(-50%); background: var(--pink); color: #fff; font-size: 0.7rem; font-weight: bold; padding: 4px 15px; border-bottom-left-radius: 8px; border-bottom-right-radius: 8px; letter-spacing: 1px;">MOST POPULAR</div>
+        <h3 class="feat-title" style="font-size: 1.5rem; color: var(--pink); margin-top: 10px;">Pro Member Tier</h3>
+        <p style="font-size: 2rem; font-family: var(--fd); font-weight: 800; color: #fff; margin: 15px 0;">₹1999<span style="font-size: 1rem; color: var(--txt2); font-family: var(--fb);"> /month</span></p>
+        <p class="feat-desc" style="margin-bottom: 25px;">Unlimited tournament access for your entire squad with VIP benefits.</p>
+        <ul style="margin-bottom: 30px; font-size: 0.9rem; color: var(--txt2); line-height: 2;">
+          <li><strong style="color: var(--pink);">✔️ Zero Entry Fees (All Games)</strong></li>
+          <li>✔️ Priority Registration</li>
+          <li>✔️ Premium Team Badges</li>
+          <li>✔️ Direct Admin Support</li>
+        </ul>
+        <div style="margin-top: auto;">
+          <a class="btn-prim" href="dashboard.html" style="display: block; text-align: center; width: 100%; box-shadow: 0 0 20px rgba(255,45,120,0.4); background: linear-gradient(135deg, #ff2d78, #8b5cf6);">Go Pro Now</a>
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- ══ CTA BANNER ══ -->
+  <section class="cta-section" id="cta">
+    <div class="orb" style="width:400px;height:400px;background:rgba(139,92,246,0.15);top:50%;left:50%;transform:translate(-50%,-50%)"></div>
+    <div class="cta-box">
+      <h2>Ready to <span class="grad-txt">Compete?</span></h2>
+      <p>Join thousands of teams already registered for Season 2026. Your next championship starts here.</p>
+      <div class="hero-ctas">
+        <a class="btn-prim" href="dashboard.html">Go to Dashboard ⚡</a>
+        <a class="btn-ghost" href="tournaments.html">View All Tournaments</a>
+      </div>
+    </div>
+  </section>
+
+  <!-- ══ FOOTER ══ -->
+  <footer>
+    <div class="foot-brand"><span style="font-size:1.4rem;filter:drop-shadow(0 0 8px var(--blue))">⚡</span>Game<span class="acc">Quest</span></div>
+    <p class="foot-copy">© 2026 GameQuest Esports Hub. All rights reserved.</p>
+    <div class="foot-links">
+      <a href="#">Privacy</a><a href="#">Terms</a><a href="#">Contact</a>
+    </div>
+  </footer>
+
+  <script>
+    // Navbar scroll glow effect
+    window.addEventListener('scroll',()=>{
+      document.getElementById('nav').classList.toggle('sc', window.scrollY > 50);
+    });
+  </script>
+</body>
+</html>

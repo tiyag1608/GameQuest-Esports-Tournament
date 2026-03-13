@@ -1,0 +1,464 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>GameQuest – Dashboard</title>
+  <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;600;700;900&family=Rajdhani:wght@400;500;600;700&display=swap" rel="stylesheet"/>
+  <style>
+    :root{
+      --bg:#07080f;--surface:#0d0f1c;--s2:#131629;--border:#1e2240;
+      --blue:#00d4ff;--purple:#8b5cf6;--cyan:#06ffa5;--pink:#ff2d78;
+      --orange:#ff9a3c;--txt:#e8eaf6;--txt2:#8892b0;--txt3:#4a5568;
+      --grad:linear-gradient(135deg,#00d4ff,#8b5cf6);
+      --gcard:linear-gradient(145deg,#0d0f1c,#131629);
+      --r:8px;--r2:14px;--tr:0.3s ease;
+      --fd:'Orbitron',monospace;--fb:'Rajdhani',sans-serif;
+    }
+    *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+    html{scroll-behavior:smooth}
+    body{font-family:var(--fb);background:var(--bg);color:var(--txt);display:flex;min-height:100vh;overflow-x:hidden}
+    a{text-decoration:none;color:inherit}
+    button{cursor:pointer;border:none;background:none;font-family:var(--fb)}
+
+    /* ── SIDEBAR ── */
+    .sidebar{
+      width:240px;min-width:240px;background:var(--surface);
+      border-right:1px solid var(--border);display:flex;flex-direction:column;
+      padding:0 0 24px;position:fixed;height:100vh;z-index:100;
+      transition:transform var(--tr);
+    }
+    .sb-brand{
+      display:flex;align-items:center;gap:10px;padding:22px 20px;
+      border-bottom:1px solid var(--border);font-family:var(--fd);
+      font-size:1.15rem;font-weight:700;letter-spacing:2px;
+    }
+    .sb-icon{font-size:1.5rem;filter:drop-shadow(0 0 8px var(--blue))}
+    .acc{color:var(--blue)}
+    .sb-section{padding:20px 12px 8px;font-size:0.7rem;letter-spacing:2px;color:var(--txt3);text-transform:uppercase}
+    .sb-link{
+      display:flex;align-items:center;gap:12px;padding:11px 20px;
+      border-radius:var(--r);margin:2px 8px;font-size:0.97rem;font-weight:600;
+      color:var(--txt2);transition:all var(--tr);cursor:pointer;
+    }
+    .sb-link:hover{background:rgba(0,212,255,0.07);color:var(--blue)}
+    .sb-link.active{background:rgba(0,212,255,0.1);color:var(--blue);border-left:3px solid var(--blue)}
+    .sb-link .sb-emoji{font-size:1.1rem;min-width:22px}
+    .sb-bottom{margin-top:auto;padding:16px}
+    .sb-user{
+      display:flex;align-items:center;gap:12px;padding:12px;
+      border-radius:var(--r2);background:var(--s2);border:1px solid var(--border);
+    }
+    .sb-avatar{
+      width:38px;height:38px;border-radius:50%;background:var(--grad);
+      display:flex;align-items:center;justify-content:center;
+      font-size:1rem;font-weight:700;color:#fff;flex-shrink:0;
+    }
+    .sb-uname{font-size:0.88rem;font-weight:700}
+    .sb-role{font-size:0.72rem;color:var(--txt3)}
+
+    /* ── MAIN ── */
+    .main{margin-left:240px;flex:1;display:flex;flex-direction:column;min-height:100vh}
+
+    /* ── TOPBAR ── */
+    .topbar{
+      height:64px;display:flex;align-items:center;justify-content:space-between;
+      padding:0 28px;background:rgba(7,8,15,0.8);backdrop-filter:blur(12px);
+      border-bottom:1px solid var(--border);position:sticky;top:0;z-index:50;
+    }
+    .topbar-left h1{font-family:var(--fd);font-size:1rem;font-weight:700;letter-spacing:1px}
+    .topbar-left p{font-size:0.82rem;color:var(--txt2);margin-top:1px}
+    .topbar-right{display:flex;align-items:center;gap:12px}
+    .tb-btn{
+      padding:8px 18px;border-radius:var(--r);background:var(--grad);color:#fff;
+      font-family:var(--fd);font-size:0.72rem;font-weight:700;letter-spacing:1px;
+      text-transform:uppercase;transition:transform var(--tr),box-shadow var(--tr);
+    }
+    .tb-btn:hover{transform:translateY(-2px);box-shadow:0 0 20px rgba(0,212,255,0.4)}
+    .notif{
+      width:38px;height:38px;border-radius:var(--r);border:1px solid var(--border);
+      display:flex;align-items:center;justify-content:center;
+      font-size:1rem;position:relative;transition:border-color var(--tr);cursor:pointer;
+    }
+    .notif:hover{border-color:var(--blue)}
+    .notif-dot{
+      position:absolute;top:6px;right:6px;width:8px;height:8px;border-radius:50%;
+      background:var(--pink);border:2px solid var(--bg);animation:blink 1s infinite;
+    }
+    @keyframes blink{0%,100%{opacity:1}50%{opacity:0}}
+
+    /* ── CONTENT ── */
+    .content{padding:28px;flex:1}
+
+    /* Live banner */
+    .live-banner{
+      background:linear-gradient(135deg,rgba(255,45,120,0.12),rgba(139,92,246,0.12));
+      border:1px solid rgba(255,45,120,0.3);border-radius:var(--r2);
+      padding:14px 20px;display:flex;align-items:center;gap:12px;margin-bottom:28px;
+      animation:live-pulse 2s infinite;
+    }
+    @keyframes live-pulse{0%,100%{box-shadow:0 0 0 0 rgba(255,45,120,0.2)}50%{box-shadow:0 0 0 8px rgba(255,45,120,0)}}
+    .live-dot{width:10px;height:10px;border-radius:50%;background:var(--pink);animation:blink 1s infinite;flex-shrink:0}
+    .live-banner p{font-size:0.9rem;font-weight:600}
+    .live-banner span{color:var(--pink);font-weight:700}
+    .live-banner a{
+      margin-left:auto;padding:7px 16px;border-radius:var(--r);
+      border:1px solid var(--pink);color:var(--pink);
+      font-size:0.78rem;font-weight:700;letter-spacing:1px;text-transform:uppercase;
+      transition:background var(--tr);
+    }
+    .live-banner a:hover{background:rgba(255,45,120,0.12)}
+
+    /* ── STAT CARDS ── */
+    .stats-row{display:grid;grid-template-columns:repeat(4,1fr);gap:18px;margin-bottom:28px}
+    .stat-card{
+      background:var(--gcard);border:1px solid var(--border);border-radius:var(--r2);
+      padding:20px 22px;display:flex;flex-direction:column;gap:10px;
+      transition:transform var(--tr),border-color var(--tr),box-shadow var(--tr);
+      position:relative;overflow:hidden;
+    }
+    .stat-card::before{content:'';position:absolute;top:0;left:0;right:0;height:3px}
+    .stat-card.blue::before  {background:linear-gradient(90deg,#00d4ff,#8b5cf6)}
+    .stat-card.cyan::before  {background:linear-gradient(90deg,#06ffa5,#00d4ff)}
+    .stat-card.purple::before{background:linear-gradient(90deg,#8b5cf6,#ff2d78)}
+    .stat-card.orange::before{background:linear-gradient(90deg,#ff9a3c,#ffcc00)}
+    .stat-card:hover{transform:translateY(-4px);border-color:var(--blue);box-shadow:0 8px 30px rgba(0,0,0,0.4),0 0 20px rgba(0,212,255,0.15)}
+    .stat-top{display:flex;align-items:center;justify-content:space-between}
+    .stat-label{font-size:0.82rem;color:var(--txt2);font-weight:600;letter-spacing:0.5px;text-transform:uppercase}
+    .stat-emoji{font-size:1.4rem}
+    .stat-num{font-family:var(--fd);font-size:1.9rem;font-weight:900;line-height:1}
+    .stat-card.blue   .stat-num{color:var(--blue);text-shadow:0 0 16px rgba(0,212,255,0.4)}
+    .stat-card.cyan   .stat-num{color:var(--cyan);text-shadow:0 0 16px rgba(6,255,165,0.4)}
+    .stat-card.purple .stat-num{color:var(--purple);text-shadow:0 0 16px rgba(139,92,246,0.4)}
+    .stat-card.orange .stat-num{color:var(--orange);text-shadow:0 0 16px rgba(255,154,60,0.4)}
+    .stat-change{font-size:0.78rem;color:var(--cyan)}
+
+    /* ── GRID LAYOUTS ── */
+    .grid2{display:grid;grid-template-columns:1fr 1fr;gap:18px;margin-bottom:28px}
+    .grid3{display:grid;grid-template-columns:2fr 1fr;gap:18px}
+
+    /* ── WIDGET ── */
+    .widget{background:var(--gcard);border:1px solid var(--border);border-radius:var(--r2);overflow:hidden}
+    .widget-head{display:flex;align-items:center;justify-content:space-between;padding:16px 20px;border-bottom:1px solid var(--border)}
+    .widget-title{font-family:var(--fd);font-size:0.85rem;font-weight:700;letter-spacing:1px}
+    .widget-badge{padding:4px 10px;border-radius:50px;font-size:0.7rem;font-weight:700;letter-spacing:1px;text-transform:uppercase}
+    .widget-badge.live{background:rgba(255,45,120,0.15);color:var(--pink);border:1px solid rgba(255,45,120,0.3)}
+    .widget-badge.info{background:rgba(0,212,255,0.1);color:var(--blue);border:1px solid rgba(0,212,255,0.3)}
+    .widget-body{padding:16px 20px}
+
+    /* Tournament list */
+    .t-item{display:flex;align-items:center;gap:14px;padding:12px 0;border-bottom:1px solid var(--border)}
+    .t-item:last-child{border-bottom:none}
+    .t-icon{width:42px;height:42px;border-radius:var(--r);display:flex;align-items:center;justify-content:center;font-size:1.3rem;flex-shrink:0}
+    .t-icon.bgmi{background:rgba(255,107,53,0.15);border:1px solid rgba(255,107,53,0.3)}
+    .t-icon.val {background:rgba(255,70,85,0.15); border:1px solid rgba(255,70,85,0.3)}
+    .t-icon.ff  {background:rgba(255,154,60,0.15);border:1px solid rgba(255,154,60,0.3)}
+    .t-name{font-weight:700;font-size:0.92rem}
+    .t-sub{font-size:0.75rem;color:var(--txt2);margin-top:2px}
+    .t-right{margin-left:auto;text-align:right}
+    .t-prize{font-family:var(--fd);font-size:0.85rem;color:var(--cyan);font-weight:700}
+    .t-slots{font-size:0.72rem;color:var(--txt3);margin-top:2px}
+    .badge{display:inline-block;padding:3px 9px;border-radius:50px;font-size:0.65rem;font-weight:700;letter-spacing:1px;text-transform:uppercase}
+    .badge.open  {background:rgba(6,255,165,0.12);color:var(--cyan);  border:1px solid rgba(6,255,165,0.3)}
+    .badge.live  {background:rgba(255,45,120,0.12);color:var(--pink);  border:1px solid rgba(255,45,120,0.3)}
+    .badge.closed{background:rgba(74,85,104,0.2); color:var(--txt3);  border:1px solid rgba(74,85,104,0.3)}
+
+    /* Live Score widget */
+    .score-item{background:var(--s2);border:1px solid var(--border);border-radius:var(--r);padding:14px 16px;margin-bottom:12px}
+    .score-item:last-child{margin-bottom:0}
+    .score-match-title{font-size:0.72rem;color:var(--txt2);font-weight:600;letter-spacing:1px;margin-bottom:10px;text-transform:uppercase}
+    .score-row{display:flex;align-items:center;justify-content:space-between;gap:8px}
+    .sc-team{flex:1;text-align:center}
+    .sc-name{font-size:0.82rem;font-weight:700;margin-bottom:4px}
+    .sc-score{font-family:var(--fd);font-size:1.8rem;font-weight:900;color:var(--blue);text-shadow:0 0 16px rgba(0,212,255,0.4);transition:transform 0.2s}
+    .vs{font-family:var(--fd);font-size:0.7rem;color:var(--txt3);border:1px solid var(--border);padding:3px 7px;border-radius:4px}
+    .score-btns{display:flex;gap:8px;margin-top:10px}
+    .sc-btn{flex:1;padding:7px;border-radius:var(--r);border:1px solid var(--cyan);color:var(--cyan);font-size:0.72rem;font-weight:700;letter-spacing:1px;text-transform:uppercase;transition:background var(--tr),box-shadow var(--tr),transform var(--tr)}
+    .sc-btn:hover{background:rgba(6,255,165,0.1);box-shadow:0 0 12px rgba(6,255,165,0.3);transform:scale(1.02)}
+    .flash{animation:pop 0.35s ease}
+    @keyframes pop{0%{transform:scale(1);color:var(--cyan)}50%{transform:scale(1.35);color:var(--cyan)}100%{transform:scale(1);color:var(--blue)}}
+
+    /* Activity Feed */
+    .feed-item{display:flex;align-items:flex-start;gap:12px;padding:12px 0;border-bottom:1px solid var(--border)}
+    .feed-item:last-child{border-bottom:none}
+    .feed-dot{width:32px;height:32px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:0.9rem;flex-shrink:0;margin-top:2px}
+    .feed-dot.win  {background:rgba(6,255,165,0.12); border:1px solid rgba(6,255,165,0.3)}
+    .feed-dot.reg  {background:rgba(0,212,255,0.12); border:1px solid rgba(0,212,255,0.3)}
+    .feed-dot.live {background:rgba(255,45,120,0.12);border:1px solid rgba(255,45,120,0.3)}
+    .feed-dot.prize{background:rgba(255,154,60,0.12);border:1px solid rgba(255,154,60,0.3)}
+    .feed-text{font-size:0.85rem;line-height:1.4}
+    .feed-text strong{color:var(--blue)}
+    .feed-time{font-size:0.7rem;color:var(--txt3);margin-top:3px}
+
+    /* Progress bars */
+    .prog-wrap{margin-bottom:14px}
+    .prog-top{display:flex;justify-content:space-between;margin-bottom:6px}
+    .prog-label{font-size:0.82rem;font-weight:600}
+    .prog-val{font-size:0.82rem;color:var(--txt2)}
+    .prog-bg{height:6px;background:var(--border);border-radius:3px;overflow:hidden}
+    .prog-fill{height:100%;border-radius:3px;transition:width 1s ease}
+    .prog-fill.blue  {background:linear-gradient(90deg,var(--blue),var(--purple))}
+    .prog-fill.cyan  {background:linear-gradient(90deg,var(--cyan),var(--blue))}
+    .prog-fill.purple{background:linear-gradient(90deg,var(--purple),var(--pink))}
+
+    /* Quick Links */
+    .quick-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px;padding:16px 20px}
+    .quick-card{background:var(--s2);border:1px solid var(--border);border-radius:var(--r);padding:16px;text-align:center;transition:transform var(--tr),border-color var(--tr),box-shadow var(--tr);cursor:pointer}
+    .quick-card:hover{transform:translateY(-3px);border-color:var(--blue);box-shadow:0 0 16px rgba(0,212,255,0.15)}
+    .q-icon{font-size:1.8rem;margin-bottom:8px}
+    .q-title{font-family:var(--fd);font-size:0.75rem;font-weight:700;letter-spacing:1px;color:var(--blue)}
+    .q-sub{font-size:0.72rem;color:var(--txt2);margin-top:3px}
+
+    /* Toast */
+    #toast{position:fixed;bottom:24px;right:24px;background:var(--surface);border:1px solid var(--cyan);box-shadow:0 0 20px rgba(6,255,165,0.25);padding:12px 20px;border-radius:var(--r);font-size:0.88rem;font-weight:600;z-index:9999;opacity:0;transform:translateY(16px);transition:opacity 0.3s,transform 0.3s;pointer-events:none;max-width:300px}
+    #toast.show{opacity:1;transform:translateY(0)}
+
+    /* Mobile toggle */
+    #menuBtn{display:none;position:fixed;top:14px;left:14px;z-index:200;width:38px;height:38px;border-radius:var(--r);background:var(--surface);border:1px solid var(--border);flex-direction:column;align-items:center;justify-content:center;gap:5px}
+    #menuBtn span{display:block;width:18px;height:2px;background:var(--blue);border-radius:2px}
+
+    /* Responsive */
+    @media(max-width:1100px){.stats-row{grid-template-columns:repeat(2,1fr)}}
+    @media(max-width:900px){
+      .grid2,.grid3{grid-template-columns:1fr}
+      .sidebar{transform:translateX(-100%)}
+      .sidebar.open{transform:translateX(0)}
+      .main{margin-left:0}
+      #menuBtn{display:flex}
+    }
+    @media(max-width:600px){.stats-row{grid-template-columns:1fr}.content{padding:16px}}
+    ::-webkit-scrollbar{width:5px;height:5px}::-webkit-scrollbar-track{background:var(--bg)}
+    ::-webkit-scrollbar-thumb{background:var(--border);border-radius:3px}
+    ::-webkit-scrollbar-thumb:hover{background:var(--blue)}
+  </style>
+</head>
+<body>
+
+  <button id="menuBtn" onclick="toggleSidebar()" aria-label="Toggle menu">
+    <span></span><span></span><span></span>
+  </button>
+
+  <!-- ══ SIDEBAR ══ -->
+  <aside class="sidebar" id="sidebar">
+    <div class="sb-brand">
+      <span class="sb-icon">⚡</span>Game<span class="acc">Quest</span>
+    </div>
+    <p class="sb-section">Main</p>
+    <a class="sb-link" href="index.html"><span class="sb-emoji">🏠</span> Home</a>
+    <a class="sb-link active" href="dashboard.html"><span class="sb-emoji">📊</span> Dashboard</a>
+    <a class="sb-link" href="tournaments.html"><span class="sb-emoji">🏆</span> Tournaments</a>
+    <a class="sb-link" href="brackets.html"><span class="sb-emoji">🎯</span> Brackets</a>
+    <p class="sb-section">Analytics</p>
+    <a class="sb-link" href="#" onclick="toast('📈 Stats page coming soon!')"><span class="sb-emoji">📈</span> Stats</a>
+    <a class="sb-link" href="#" onclick="toast('🎮 Games page coming soon!')"><span class="sb-emoji">🎮</span> Games</a>
+    <a class="sb-link" href="#" onclick="toast('👥 Teams page coming soon!')"><span class="sb-emoji">👥</span> Teams</a>
+
+    <div class="sb-bottom">
+      <div class="sb-user">
+        <div class="sb-avatar">T</div>
+        <div><p class="sb-uname">Tiya</p><p class="sb-role">Tournament Admin</p></div>
+      </div>
+    </div>
+  </aside>
+
+  <!-- ══ MAIN ══ -->
+  <div class="main" id="main">
+    <div class="topbar">
+      <div class="topbar-left">
+        <h1>Dashboard Overview</h1>
+        <p id="dateStr">Loading...</p>
+      </div>
+      <div class="topbar-right">
+        <div class="notif" title="Notifications">🔔<span class="notif-dot"></span></div>
+        <button class="tb-btn" onclick="toast('🚀 New tournament created!')">+ New Tournament</button>
+      </div>
+    </div>
+
+    <div class="content">
+      <!-- Live Banner -->
+      <div class="live-banner">
+        <div class="live-dot"></div>
+        <p>🔴 <span>2 Matches</span> currently LIVE — Valorant Open QF & BGMI Masters</p>
+        <a href="brackets.html">View Bracket →</a>
+      </div>
+
+      <!-- Stat Cards -->
+      <div class="stats-row">
+        <div class="stat-card blue">
+          <div class="stat-top"><span class="stat-label">Active Tournaments</span><span class="stat-emoji">🏆</span></div>
+          <div class="stat-num">24</div>
+          <div class="stat-change">↑ +3 this week</div>
+        </div>
+        <div class="stat-card cyan">
+          <div class="stat-top"><span class="stat-label">Teams Registered</span><span class="stat-emoji">👥</span></div>
+          <div class="stat-num">3,214</div>
+          <div class="stat-change">↑ +128 today</div>
+        </div>
+        <div class="stat-card purple">
+          <div class="stat-top"><span class="stat-label">Total Prize Pool</span><span class="stat-emoji">💰</span></div>
+          <div class="stat-num">₹12L+</div>
+          <div class="stat-change">↑ Season High</div>
+        </div>
+        <div class="stat-card orange">
+          <div class="stat-top"><span class="stat-label">Matches Played</span><span class="stat-emoji">⚔️</span></div>
+          <div class="stat-num">580</div>
+          <div class="stat-change">↑ +18 today</div>
+        </div>
+      </div>
+
+      <!-- Tournaments + Live Scores -->
+      <div class="grid2">
+        <div class="widget">
+          <div class="widget-head">
+            <span class="widget-title">Active Tournaments</span>
+            <a href="tournaments.html" class="widget-badge info">View All →</a>
+          </div>
+          <div class="widget-body">
+            <div class="t-item">
+              <div class="t-icon val">⚔️</div>
+              <div><p class="t-name">Valorant Open Series</p><p class="t-sub">5v5 · April 2, 2026 · 16 Teams</p></div>
+              <div class="t-right"><p class="t-prize">₹2,50,000</p><span class="badge live">🔴 Live</span></div>
+            </div>
+            <div class="t-item">
+              <div class="t-icon bgmi">🔫</div>
+              <div><p class="t-name">BGMI Masters Cup</p><p class="t-sub">Squad · March 25, 2026 · 32 Teams</p></div>
+              <div class="t-right"><p class="t-prize">₹1,00,000</p><span class="badge open">Open</span></div>
+            </div>
+            <div class="t-item">
+              <div class="t-icon ff">🔥</div>
+              <div><p class="t-name">Free Fire Tri-Cup</p><p class="t-sub">Trio · April 10, 2026 · 48 Teams</p></div>
+              <div class="t-right"><p class="t-prize">₹75,000</p><span class="badge open">Open</span></div>
+            </div>
+            <div class="t-item">
+              <div class="t-icon val">⚔️</div>
+              <div><p class="t-name">Valorant Champions Grind</p><p class="t-sub">Team · April 20, 2026 · 8 Teams</p></div>
+              <div class="t-right"><p class="t-prize">₹5,00,000</p><span class="badge closed">Closed</span></div>
+            </div>
+            <div class="t-item">
+              <div class="t-icon ff">🔥</div>
+              <div><p class="t-name">Free Fire Squad Rush</p><p class="t-sub">Squad · April 5, 2026 · 32 Teams</p></div>
+              <div class="t-right"><p class="t-prize">₹80,000</p><span class="badge live">🔴 Live</span></div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Live Scores -->
+        <div class="widget">
+          <div class="widget-head"><span class="widget-title">🔴 Live Scores</span><span class="widget-badge live">Live</span></div>
+          <div class="widget-body">
+            <div class="score-item">
+              <p class="score-match-title">QF Match 1 – Valorant Open</p>
+              <div class="score-row">
+                <div class="sc-team"><p class="sc-name">Team Nova</p><p class="sc-score" id="s1a">8</p></div>
+                <div class="vs">VS</div>
+                <div class="sc-team"><p class="sc-name">Shadow Rush</p><p class="sc-score" id="s1b">5</p></div>
+              </div>
+              <div class="score-btns">
+                <button class="sc-btn" onclick="updateScore('s1a','Team Nova')">+1 Nova</button>
+                <button class="sc-btn" onclick="updateScore('s1b','Shadow Rush')">+1 Shadow</button>
+              </div>
+            </div>
+            <div class="score-item">
+              <p class="score-match-title">QF Match 2 – Valorant Open</p>
+              <div class="score-row">
+                <div class="sc-team"><p class="sc-name">Blaze eSports</p><p class="sc-score" id="s2a">6</p></div>
+                <div class="vs">VS</div>
+                <div class="sc-team"><p class="sc-name">Storm Riders</p><p class="sc-score" id="s2b">7</p></div>
+              </div>
+              <div class="score-btns">
+                <button class="sc-btn" onclick="updateScore('s2a','Blaze')">+1 Blaze</button>
+                <button class="sc-btn" onclick="updateScore('s2b','Storm')">+1 Storm</button>
+              </div>
+            </div>
+            <div class="score-item">
+              <p class="score-match-title">BGMI Round 3 – Masters Cup</p>
+              <div class="score-row">
+                <div class="sc-team"><p class="sc-name">Cyber Wolves</p><p class="sc-score" id="s3a">12</p></div>
+                <div class="vs">VS</div>
+                <div class="sc-team"><p class="sc-name">Iron Fist</p><p class="sc-score" id="s3b">9</p></div>
+              </div>
+              <div class="score-btns">
+                <button class="sc-btn" onclick="updateScore('s3a','Wolves')">+1 Wolves</button>
+                <button class="sc-btn" onclick="updateScore('s3b','Iron Fist')">+1 Iron</button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Slot Progress + Activity + Quick Links -->
+      <div class="grid3">
+        <div style="display:flex;flex-direction:column;gap:18px">
+          <div class="widget">
+            <div class="widget-head"><span class="widget-title">Tournament Slot Fill</span><span class="widget-badge info">Season 2026</span></div>
+            <div class="widget-body">
+              <div class="prog-wrap"><div class="prog-top"><span class="prog-label">⚔️ Valorant Open</span><span class="prog-val">16/16 Teams</span></div><div class="prog-bg"><div class="prog-fill blue" style="width:100%"></div></div></div>
+              <div class="prog-wrap"><div class="prog-top"><span class="prog-label">🔫 BGMI Masters</span><span class="prog-val">24/32 Teams</span></div><div class="prog-bg"><div class="prog-fill cyan" style="width:75%"></div></div></div>
+              <div class="prog-wrap"><div class="prog-top"><span class="prog-label">🔥 Free Fire Trio</span><span class="prog-val">30/48 Teams</span></div><div class="prog-bg"><div class="prog-fill purple" style="width:63%"></div></div></div>
+              <div class="prog-wrap" style="margin-bottom:0"><div class="prog-top"><span class="prog-label">🔥 Free Fire Squad</span><span class="prog-val">28/32 Teams</span></div><div class="prog-bg"><div class="prog-fill blue" style="width:88%"></div></div></div>
+            </div>
+          </div>
+          <div class="widget">
+            <div class="widget-head"><span class="widget-title">Recent Activity</span><span class="widget-badge info">Live Feed</span></div>
+            <div class="widget-body">
+              <div class="feed-item"><div class="feed-dot win">🏆</div><div><p class="feed-text"><strong>Team Nova</strong> won QF Match 1 in Valorant Open (13–7)</p><p class="feed-time">2 mins ago</p></div></div>
+              <div class="feed-item"><div class="feed-dot reg">📝</div><div><p class="feed-text"><strong>Shadow Ops</strong> registered for BGMI Masters Cup</p><p class="feed-time">8 mins ago</p></div></div>
+              <div class="feed-item"><div class="feed-dot live">🔴</div><div><p class="feed-text"><strong>QF Match 2</strong> — Blaze vs Storm Riders is now LIVE</p><p class="feed-time">12 mins ago</p></div></div>
+              <div class="feed-item"><div class="feed-dot prize">💰</div><div><p class="feed-text"><strong>₹5,00,000</strong> Valorant Champions Grind — registration closed</p><p class="feed-time">30 mins ago</p></div></div>
+              <div class="feed-item"><div class="feed-dot reg">📝</div><div><p class="feed-text"><strong>Iron Fist</strong> registered for Free Fire Squad Rush</p><p class="feed-time">45 mins ago</p></div></div>
+            </div>
+          </div>
+        </div>
+
+        <div class="widget" style="align-self:start">
+          <div class="widget-head"><span class="widget-title">Quick Navigation</span></div>
+          <div class="quick-grid">
+            <a href="index.html" class="quick-card"><div class="q-icon">🏠</div><div class="q-title">Home</div><div class="q-sub">Landing page</div></a>
+            <a href="tournaments.html" class="quick-card"><div class="q-icon">🏆</div><div class="q-title">Tournaments</div><div class="q-sub">All events</div></a>
+            <a href="brackets.html" class="quick-card"><div class="q-icon">🎯</div><div class="q-title">Brackets</div><div class="q-sub">Match tree</div></a>
+            <div class="quick-card" onclick="toast('🎮 Games page coming soon!')"><div class="q-icon">🎮</div><div class="q-title">Games</div><div class="q-sub">Browse titles</div></div>
+            <div class="quick-card" onclick="toast('📊 Analytics coming soon!')"><div class="q-icon">📊</div><div class="q-title">Analytics</div><div class="q-sub">Performance</div></div>
+            <div class="quick-card" onclick="toast('👥 Teams page coming soon!')"><div class="q-icon">👥</div><div class="q-title">Teams</div><div class="q-sub">All squads</div></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div id="toast"></div>
+
+  <script>
+    // Set current date
+    const d = new Date();
+    document.getElementById('dateStr').textContent =
+      d.toLocaleDateString('en-IN',{weekday:'long',year:'numeric',month:'long',day:'numeric'});
+
+    // Mobile sidebar toggle
+    function toggleSidebar(){document.getElementById('sidebar').classList.toggle('open')}
+    document.getElementById('main').addEventListener('click',()=>{
+      document.getElementById('sidebar').classList.remove('open');
+    });
+
+    // Live score update with flash animation
+    function updateScore(id, teamName){
+      const el = document.getElementById(id);
+      el.textContent = parseInt(el.textContent) + 1;
+      el.classList.remove('flash');
+      void el.offsetWidth;
+      el.classList.add('flash');
+      setTimeout(()=> el.classList.remove('flash'), 350);
+      toast('🎯 ' + teamName + ' scored! (' + el.textContent + ')');
+    }
+
+    // Toast notification
+    let toastTimer;
+    function toast(msg){
+      const t = document.getElementById('toast');
+      t.textContent = msg;
+      t.classList.add('show');
+      clearTimeout(toastTimer);
+      toastTimer = setTimeout(()=> t.classList.remove('show'), 3000);
+    }
+  </script>
+</body>
+</html>

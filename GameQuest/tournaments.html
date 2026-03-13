@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="description" content="GameQuest – Esports Tournament Hub. Browse and register for BGMI, Valorant, Free Fire and more esports tournaments." />
+  <title>GameQuest – Tournaments</title>
+
+  <!-- Google Fonts -->
+  <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;600;700;900&family=Rajdhani:wght@400;500;600;700&display=swap" rel="stylesheet" />
+
+  <!-- Linked CSS -->
+  <link rel="stylesheet" href="css/style.css" />
+</head>
+<body>
+
+  <!-- ========== NAVIGATION BAR ========== -->
+  <nav class="navbar" id="navbar">
+    <div class="nav-brand">
+      <!-- Logo / Brand Name -->
+      <span class="logo-icon">⚡</span>
+      <span class="logo-text">Game<span class="accent">Quest</span></span>
+    </div>
+
+    <!-- Hamburger for mobile -->
+    <button class="hamburger" id="hamburger" aria-label="Toggle navigation">
+      <span></span><span></span><span></span>
+    </button>
+
+    <ul class="nav-links" id="navLinks">
+      <!-- Active class highlights current page -->
+      <li><a href="tournaments.html" class="nav-link active" id="nav-home">🏆 Tournaments</a></li>
+      <li><a href="brackets.html" class="nav-link" id="nav-brackets">🎯 Brackets</a></li>
+    </ul>
+  </nav>
+
+
+
+  <!-- ========== TOURNAMENT CARDS SECTION ========== -->
+  <section class="section" id="tournaments" style="padding-top: calc(var(--nav-height) + 40px);">
+    <div class="section-header">
+      <h2 class="section-title">Featured <span class="accent">Tournaments</span></h2>
+      <p class="section-subtitle">Register before slots fill up. All skill levels welcome.</p>
+    </div>
+
+    <!-- Filter Tabs -->
+    <div class="filter-tabs" id="filterTabs">
+      <button class="filter-btn active" data-filter="all">All Games</button>
+      <button class="filter-btn" data-filter="bgmi">BGMI</button>
+      <button class="filter-btn" data-filter="valorant">Valorant</button>
+      <button class="filter-btn" data-filter="freefire">Free Fire</button>
+    </div>
+
+    <!-- Tournament Cards Grid -->
+    <div class="cards-grid" id="cardsGrid">
+      <!-- Cards are injected by script.js -->
+    </div>
+  </section>
+
+  <!-- ========== LIVE SCORE SECTION ========== -->
+  <section class="section" id="live-scores">
+    <div class="section-header">
+      <h2 class="section-title">🔴 Live <span class="accent">Scores</span></h2>
+      <p class="section-subtitle">Real-time score updates from ongoing matches.</p>
+    </div>
+
+    <!-- Live match score cards injected by JS -->
+    <div class="live-grid" id="liveGrid">
+      <!-- Populated by script.js -->
+    </div>
+  </section>
+
+  <!-- ========== FOOTER ========== -->
+  <footer class="footer" id="footer">
+    <div class="footer-brand">
+      <span class="logo-icon">⚡</span>
+      <span class="logo-text">Game<span class="accent">Quest</span></span>
+    </div>
+    <p class="footer-copy">© 2026 GameQuest Esports Hub. All rights reserved.</p>
+    <div class="footer-links">
+      <a href="#">Privacy Policy</a>
+      <a href="#">Terms of Service</a>
+      <a href="#">Contact</a>
+    </div>
+  </footer>
+
+  <!-- ========== Linked JavaScript ========== -->
+  <script src="js/script.js"></script>
+
+</body>
+</html>
